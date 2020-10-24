@@ -1,0 +1,47 @@
+<html>
+
+<header>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+</header>
+
+<body style="background-color: #fbf7ff;
+display: flex;
+justify-content: center;
+align-items: center;">
+
+    <div class="email-body" style="height: 400px;
+	width: 600px;
+	border-radius: 5px;
+	background-color: rgb(213, 218, 240);
+	box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.09);
+	background-color: #fff;
+	background-image: url('http://flowerlyapi.toolynk.fr/api/images/layer-footer.png');
+	background-position: bottom;
+	background-repeat: no-repeat;
+	background-size: contain;">
+        <div class="logo-container" style="display: flex; justify-content: center; align-items: center;">
+            <img src="http://flowerlyapi.toolynk.fr/api/images/logo-mail.png" class="logo" style="height: 110px; width: 90px; margin-top: 5%;" />
+        </div>
+        <div class="flex-center" style="display: flex; justify-content: center; align-items: center;">
+            <div class="email-container" style="margin-top: 20px; border-radius: 25px; box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.06); width: 90%;  height: 200px; justify-content: flex-start;           padding-left: 15px;
+            padding-top: 15px;
+            background-color: #fff;">
+                <span class="title" style="color: #f48395;font-weight: 800;font-size: 15px;">{{title}}</span>
+                <p style="	font-weight: 100; font-size: 13px; line-height: 33px;">
+                    Bonjour {{clientName}}<br>
+                    Votre commande n {{numCommand}} ne peut être traitée par {{florist}}, votre compte ne sera donc pas
+                    prélevé.
+                    Vous pouvez dès à présent passer commande auprès d'un autre fleuriste.<br>
+
+
+                </p>
+                <span class="footer-text" style="font-size: 15px;">L'équipe Flowerly</span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

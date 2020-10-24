@@ -1,0 +1,12 @@
+type Query
+
+type Mutation
+
+type Subscription {
+  newsAdded: News
+}
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}

@@ -1,0 +1,21 @@
+type Formation {
+  id: ID
+  name: String
+  subTitle: String
+  description: String
+  photoUrl: String
+  createdAt: Float
+  updatedAt: Float
+}
+input InputFormation {
+  name: String
+  subTitle: String
+  description: String
+  file: Upload
+}
+extend type Mutation {
+  addFormation(input: InputFormation): Formation
+}
+extend type Query {
+  getFormations: [Formation]
+}

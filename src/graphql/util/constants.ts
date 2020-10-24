@@ -1,0 +1,4 @@
+export const SubscriptionFire = {
+	COMMAND_UPDATED: 'COMMAND_UPDATED',
+	COMMAND_ADDED: 'COMMAND_ADDED'
+};
