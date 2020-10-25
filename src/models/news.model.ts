@@ -14,4 +14,4 @@ const newsSchema =new Schema({
     toObject:{virtuals:true}
 });
 createdAt(newsSchema);
-export const NewsModel = model("formations",newsSchema);
+export const NewsModel = model("news",newsSchema);

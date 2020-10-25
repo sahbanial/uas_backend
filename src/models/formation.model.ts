@@ -3,15 +3,15 @@ import { createdAt } from "./preSave";
 
 const formationSchema =new Schema({
     id:String,
-    title:String,
+    name:String,
     subTitle:String,
     description:String,
     photoUrl:String,
-    createAt:Number,
+    createdAt:Number,
     updatedAt:Number
 },{
     toJSON:{virtuals:true},
     toObject:{virtuals:true}
 });
 createdAt(formationSchema);
-export const FormationModel = model("news",formationSchema);
+export const FormationModel = model("formations",formationSchema);

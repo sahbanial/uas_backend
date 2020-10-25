@@ -154,7 +154,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nexports.default = {\n    addFormation: (root, { input }) => new Promise((resolve, reject) => {\n        const { name, description, file } = input;\n        let inputs = { name, description };\n        new models_1.FormationModel(Object.assign({}, inputs)).save((err, res) => {\n            resolve(res);\n        });\n    }),\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/formations/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nconst onesignal_1 = __webpack_require__(/*! ../../../../tools/onesignal */ \"./src/tools/onesignal.ts\");\nexports.default = {\n    addFormation: (root, { input }) => new Promise((resolve, reject) => {\n        const { name, description, file } = input;\n        let inputs = { name, description };\n        console.log({ inputs });\n        onesignal_1.default.sendMessage({\n            contents: { en: 'Hello world!' },\n            included_segments: ['All']\n        }, function (err, resp) {\n            console.log({ resp });\n            if (err) {\n                // Handle error\n            }\n            else {\n                // Handle success!\n            }\n        });\n        new models_1.FormationModel(Object.assign({}, inputs)).save((err, res) => {\n            resolve(res);\n        });\n    }),\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/formations/index.ts?");
 
 /***/ }),
 
@@ -190,7 +190,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexport
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nexports.default = {\n    getFormations: (root, {}) => new Promise((resolve, reject) => {\n        models_1.FormationModel.find({}).then(forms => {\n            resolve(forms);\n        });\n    })\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/queries/formations/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nexports.default = {\n    getFormations: (root, {}) => new Promise((resolve, reject) => {\n        models_1.FormationModel.find({}).sort({ createdAt: -1 }).then(forms => {\n            resolve(forms);\n        });\n    })\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/queries/formations/index.ts?");
 
 /***/ }),
 
@@ -334,7 +334,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst mongoose_1 = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst preSave_1 = __webpack_require__(/*! ./preSave */ \"./src/models/preSave.ts\");\nconst formationSchema = new mongoose_1.Schema({\n    id: String,\n    title: String,\n    subTitle: String,\n    description: String,\n    photoUrl: String,\n    createAt: Number,\n    updatedAt: Number\n}, {\n    toJSON: { virtuals: true },\n    toObject: { virtuals: true }\n});\npreSave_1.createdAt(formationSchema);\nexports.FormationModel = mongoose_1.model(\"news\", formationSchema);\n\n\n//# sourceURL=webpack:///./src/models/formation.model.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst mongoose_1 = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst preSave_1 = __webpack_require__(/*! ./preSave */ \"./src/models/preSave.ts\");\nconst formationSchema = new mongoose_1.Schema({\n    id: String,\n    name: String,\n    subTitle: String,\n    description: String,\n    photoUrl: String,\n    createdAt: Number,\n    updatedAt: Number\n}, {\n    toJSON: { virtuals: true },\n    toObject: { virtuals: true }\n});\npreSave_1.createdAt(formationSchema);\nexports.FormationModel = mongoose_1.model(\"formations\", formationSchema);\n\n\n//# sourceURL=webpack:///./src/models/formation.model.ts?");
 
 /***/ }),
 
@@ -358,7 +358,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst mongoose_1 = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst preSave_1 = __webpack_require__(/*! ./preSave */ \"./src/models/preSave.ts\");\nconst newsSchema = new mongoose_1.Schema({\n    id: String,\n    title: String,\n    subTitle: String,\n    description: String,\n    photoUrl: String,\n    createAt: Number,\n    updatedAt: Number\n}, {\n    toJSON: { virtuals: true },\n    toObject: { virtuals: true }\n});\npreSave_1.createdAt(newsSchema);\nexports.NewsModel = mongoose_1.model(\"formations\", newsSchema);\n\n\n//# sourceURL=webpack:///./src/models/news.model.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst mongoose_1 = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst preSave_1 = __webpack_require__(/*! ./preSave */ \"./src/models/preSave.ts\");\nconst newsSchema = new mongoose_1.Schema({\n    id: String,\n    title: String,\n    subTitle: String,\n    description: String,\n    photoUrl: String,\n    createAt: Number,\n    updatedAt: Number\n}, {\n    toJSON: { virtuals: true },\n    toObject: { virtuals: true }\n});\npreSave_1.createdAt(newsSchema);\nexports.NewsModel = mongoose_1.model(\"news\", newsSchema);\n\n\n//# sourceURL=webpack:///./src/models/news.model.ts?");
 
 /***/ }),
 
@@ -443,6 +443,18 @@ eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _argument
 
 "use strict";
 eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.UserRole = {\n    ADMIN: 'ADMIN',\n    CLIENT: 'CLIENT',\n    FLORIST: 'FLORIST',\n    VISITOR: 'VISITOR'\n};\nexports.MAIL_HOST = 'mail.toolynk.com';\nexports.MAIL_USER = 'bridge@toolynk.com';\nexports.MAIL_PASSWORD = 'G&340fvv';\nexports.EMAIL_SENDER = 'contact@toolynk.com';\nexports.EMAIL_SENDER_PASSWORD = 'sahbanial123';\nexports.CURRENCY = 'EUR';\nexports.PHONE_PRFIX = '+33';\nexports.MAX_DISTANCE = 7;\nexports.MomentFormat = {\n    DATE_HOURS: 'DD/MM/YYYY HH:mm',\n    DATE: 'DD/MM/YYYY',\n    TIME: 'HH:mm'\n};\n\n\n//# sourceURL=webpack:///./src/tools/constant.ts?");
+
+/***/ }),
+
+/***/ "./src/tools/onesignal.ts":
+/*!********************************!*\
+  !*** ./src/tools/onesignal.ts ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst onesignal = __webpack_require__(/*! simple-onesignal */ \"simple-onesignal\");\nonesignal.configure('07b25e23-ac33-4a74-aade-3bc0e3cfabc9', 'ZjBkZmZkZWMtYjJjZS00ZTE0LTliZDgtNTgzODBkYTUxYWEz');\nexports.default = onesignal;\n\n\n//# sourceURL=webpack:///./src/tools/onesignal.ts?");
 
 /***/ }),
 
@@ -675,6 +687,17 @@ eval("module.exports = require(\"mongoose\");\n\n//# sourceURL=webpack:///extern
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"morgan\");\n\n//# sourceURL=webpack:///external_%22morgan%22?");
+
+/***/ }),
+
+/***/ "simple-onesignal":
+/*!***********************************!*\
+  !*** external "simple-onesignal" ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = require(\"simple-onesignal\");\n\n//# sourceURL=webpack:///external_%22simple-onesignal%22?");
 
 /***/ }),
 

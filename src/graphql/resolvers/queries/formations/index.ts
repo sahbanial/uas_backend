@@ -3,7 +3,7 @@ import { FormationModel } from "../../../../models";
 
 export default{
     getFormations:(root,{})=>new Promise((resolve,reject)=>{
-        FormationModel.find({}).then(forms=>{
+        FormationModel.find({}).sort({createdAt:-1}).then(forms=>{
             resolve(forms);
         })
         
