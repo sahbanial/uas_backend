@@ -15,3 +15,4 @@ const newsSchema =new Schema({
 });
 createdAt(newsSchema);
 export const NewsModel = model("news",newsSchema);
+

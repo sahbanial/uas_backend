@@ -17,8 +17,14 @@ export default {
             // Handle success!
         }
     });
+    console.log({input})
       new FormationModel({ ...inputs }).save((err, res) => {
           resolve(res);
       });
     }),
+    deleteFormation:(root,{id})=>{
+        return FormationModel.findById(id).then((formations:any)=>{
+            return Promise.resolve(formations.remove());
+        })
+    }
 };
