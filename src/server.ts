@@ -15,7 +15,7 @@ import { AuthRouter } from './routes';
 import Token from './tools/token';
 import { UserRole } from './tools/constant';
 import { getUserByToken } from './helpers/function';
-import StuartRouter from './routes/stuart';
+
 //import { getUserByToken } from './helpers/function';
 //ANCHOR conexion mongoose database
 class Server {
@@ -52,7 +52,7 @@ class Server {
 	}
 	private setupRoutes() {
 		this.app.use(process.env.AUTH_ENDPOINT, AuthRouter);
-	
+
 		this.app.use(process.env.GRAPHQL_ENDPOINT, (req, res, next) => {
 			const token = req.headers.authorization;
 			Token.ensure(token).then(() => next()).catch(message =>
