@@ -52,7 +52,7 @@ class Server {
 	}
 	private setupRoutes() {
 		this.app.use(process.env.AUTH_ENDPOINT, AuthRouter);
-		this.app.use(process.env.STUART_ENDPOINT, StuartRouter);
+	
 		this.app.use(process.env.GRAPHQL_ENDPOINT, (req, res, next) => {
 			const token = req.headers.authorization;
 			Token.ensure(token).then(() => next()).catch(message =>
@@ -68,7 +68,7 @@ class Server {
 		const server = new ApolloServer({
 			schema,
 			context: async ({ req }) => {
-				
+
 				const user = await getUserByToken(req.headers.authorization);
 				console.log("user,user")
 				return { user, token: req.headers.authorization, role: (user as any)?.role ?? UserRole.VISITOR };
