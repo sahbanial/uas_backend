@@ -50,6 +50,7 @@
     "nodemailer": "^6.3.1",
     "nodemailer-mandrill-transport": "^1.2.0",
     "nodemon": "^1.19.4",
+    "onesignal-node": "^3.2.0",
     "path": "^0.12.7",
     "request": "^2.88.0",
     "simple-onesignal": "^1.0.4",

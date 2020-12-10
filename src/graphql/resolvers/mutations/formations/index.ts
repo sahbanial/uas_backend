@@ -1,3 +1,4 @@
+import { sendPushNotification } from './../../../util/notification';
 import { FormationModel } from "../../../../models";
 import onesignal from "../../../../tools/onesignal";
 export default {
@@ -5,22 +6,10 @@ export default {
     new Promise((resolve, reject) => {
       const { name, description, file } = input;
       let inputs: any = { name, description };
-      console.log({ inputs });
-      onesignal.sendMessage(
-        {
-          contents: { en: name },
-          included_segments: ["All"],
-        },
-        function (err, resp) {
-          console.log({ resp });
-          if (err) {
-            // Handle error
-          } else {
-            // Handle success!
-          }
-        }
-      );
-      console.log({ input });
+      sendPushNotification({
+        message:"Nouvelle formation",
+        title:"Nouvelle formation"
+      })
       new FormationModel({ ...inputs }).save((err, res) => {
         resolve(res);
       });
@@ -30,4 +19,10 @@ export default {
       return Promise.resolve(formations.remove());
     });
   },
+  updateFormation:(root, { id,input }) => {
+    return FormationModel.updateOne({id},{$set:{...input}}).exec((err: any,res) => {
+      return res;
+    });
+  },
+
 };

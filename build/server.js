@@ -122,18 +122,6 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 
 /***/ }),
 
-/***/ "./src/graphql/pubsub/index.ts":
-/*!*************************************!*\
-  !*** ./src/graphql/pubsub/index.ts ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst graphql_subscriptions_1 = __webpack_require__(/*! graphql-subscriptions */ \"graphql-subscriptions\");\nconst instance = new graphql_subscriptions_1.PubSub();\ninstance.ee.setMaxListeners(10e1000000);\nexports.default = instance;\n\n\n//# sourceURL=webpack:///./src/graphql/pubsub/index.ts?");
-
-/***/ }),
-
 /***/ "./src/graphql/resolvers/index.ts":
 /*!****************************************!*\
   !*** ./src/graphql/resolvers/index.ts ***!
@@ -154,7 +142,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nconst onesignal_1 = __webpack_require__(/*! ../../../../tools/onesignal */ \"./src/tools/onesignal.ts\");\nexports.default = {\n    addFormation: (root, { input }) => new Promise((resolve, reject) => {\n        const { name, description, file } = input;\n        let inputs = { name, description };\n        console.log({ inputs });\n        onesignal_1.default.sendMessage({\n            contents: { en: 'Hello world!' },\n            included_segments: ['All']\n        }, function (err, resp) {\n            console.log({ resp });\n            if (err) {\n                // Handle error\n            }\n            else {\n                // Handle success!\n            }\n        });\n        console.log({ input });\n        new models_1.FormationModel(Object.assign({}, inputs)).save((err, res) => {\n            resolve(res);\n        });\n    }),\n    deleteFormation: (root, { id }) => {\n        return models_1.FormationModel.findById(id).then((formations) => {\n            return Promise.resolve(formations.remove());\n        });\n    }\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/formations/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst notification_1 = __webpack_require__(/*! ./../../../util/notification */ \"./src/graphql/util/notification.ts\");\nconst models_1 = __webpack_require__(/*! ../../../../models */ \"./src/models/index.ts\");\nexports.default = {\n    addFormation: (root, { input }) => new Promise((resolve, reject) => {\n        const { name, description, file } = input;\n        let inputs = { name, description };\n        notification_1.sendPushNotification({\n            message: \"Nouvelle formation\",\n            title: \"Nouvelle formation\"\n        });\n        new models_1.FormationModel(Object.assign({}, inputs)).save((err, res) => {\n            resolve(res);\n        });\n    }),\n    deleteFormation: (root, { id }) => {\n        return models_1.FormationModel.findById(id).then((formations) => {\n            return Promise.resolve(formations.remove());\n        });\n    },\n    updateFormation: (root, { id, input }) => {\n        return models_1.FormationModel.updateOne({ id }, { $set: Object.assign({}, input) }).exec((err, res) => {\n            return res;\n        });\n    },\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/formations/index.ts?");
 
 /***/ }),
 
@@ -166,7 +154,19 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst formations_1 = __webpack_require__(/*! ./formations */ \"./src/graphql/resolvers/mutations/formations/index.ts\");\nexports.default = Object.assign({}, formations_1.default);\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst news_1 = __webpack_require__(/*! ./news */ \"./src/graphql/resolvers/mutations/news/index.ts\");\nconst formations_1 = __webpack_require__(/*! ./formations */ \"./src/graphql/resolvers/mutations/formations/index.ts\");\nexports.default = Object.assign(Object.assign({}, formations_1.default), news_1.default);\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/index.ts?");
+
+/***/ }),
+
+/***/ "./src/graphql/resolvers/mutations/news/index.ts":
+/*!*******************************************************!*\
+  !*** ./src/graphql/resolvers/mutations/news/index.ts ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst notification_1 = __webpack_require__(/*! ./../../../util/notification */ \"./src/graphql/util/notification.ts\");\nconst news_model_1 = __webpack_require__(/*! ./../../../../models/news.model */ \"./src/models/news.model.ts\");\nexports.default = {\n    addNews: (root, { input }) => new Promise((resolve, reject) => {\n        const { title, description, file } = input;\n        let inputs = { title, description };\n        new news_model_1.NewsModel(Object.assign({}, inputs)).save((err, res) => {\n            resolve(res);\n            notification_1.sendPushNotification({\n                message: description,\n                title\n            });\n        });\n    }),\n    deleteNews: (root, { id }) => {\n        return news_model_1.NewsModel.findById(id).then((formations) => {\n            return Promise.resolve(formations.remove());\n        });\n    },\n    updateNews: (root, { id, input }) => {\n        return news_model_1.NewsModel.updateOne({ id }, { $set: Object.assign({}, input) }).exec((err, res) => {\n            return res;\n        });\n    },\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/mutations/news/index.ts?");
 
 /***/ }),
 
@@ -214,7 +214,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.default = {\n    getNews: () => {\n    }\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/queries/news/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst news_model_1 = __webpack_require__(/*! ./../../../../models/news.model */ \"./src/models/news.model.ts\");\nexports.default = {\n    getNews: () => {\n        return news_model_1.NewsModel.find();\n    }\n};\n\n\n//# sourceURL=webpack:///./src/graphql/resolvers/queries/news/index.ts?");
 
 /***/ }),
 
@@ -242,27 +242,15 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 
 /***/ }),
 
-/***/ "./src/graphql/util/constants.ts":
-/*!***************************************!*\
-  !*** ./src/graphql/util/constants.ts ***!
-  \***************************************/
+/***/ "./src/graphql/util/notification.ts":
+/*!******************************************!*\
+  !*** ./src/graphql/util/notification.ts ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.SubscriptionFire = {\n    COMMAND_UPDATED: 'COMMAND_UPDATED',\n    COMMAND_ADDED: 'COMMAND_ADDED'\n};\n\n\n//# sourceURL=webpack:///./src/graphql/util/constants.ts?");
-
-/***/ }),
-
-/***/ "./src/graphql/util/populateFields.ts":
-/*!********************************************!*\
-  !*** ./src/graphql/util/populateFields.ts ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.populateFields = {\n    clients: ['profile'],\n    client: ['profile'],\n    florists: ['profile'],\n    command: {\n        clientFlorist: [\n            { path: 'client', populate: [{ path: 'profile' }] },\n            { path: 'florist', populate: [{ path: 'profile' }] }\n        ],\n        clientFloristProducts: [\n            { path: 'florist', populate: [{ path: 'profile' }] },\n            { path: 'client', populate: [{ path: 'profile' }] },\n            { path: 'products.product' }\n        ]\n    },\n    florist: {\n        profile: [{ path: 'profile' }]\n    }\n};\n\n\n//# sourceURL=webpack:///./src/graphql/util/populateFields.ts?");
+eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst OneSignal = __webpack_require__(/*! onesignal-node */ \"onesignal-node\");\nexports.SEGMENTS = {\n    ALL_USERS: 'Subscribed Users',\n    ACTIVE_USERS: 'Active Users',\n    INACTIVE_USERS: 'Inactive Users'\n};\nexports.ACTIONS = {\n    OPEN_APP: 'OPEN_APP',\n    HOME: 'HOME',\n    PRODUCTS: 'PRODUCTS',\n    PROFILE: 'PROFILE',\n    CART: 'CART'\n};\nexports.sendPushNotification = ({ message, title, included_segments = [exports.SEGMENTS.ALL_USERS], excluded_segments = [], included_users = [], action = exports.ACTIONS.OPEN_APP, actionData = null, senderId = null, senderRole = null, send_after = null, to = null }) => new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {\n    const client = new OneSignal.Client(\"07b25e23-ac33-4a74-aade-3bc0e3cfabc9\", \"ZjBkZmZkZWMtYjJjZS00ZTE0LTliZDgtNTgzODBkYTUxYWEz\");\n    const notification = {\n        contents: {\n            en: message\n        },\n        headings: {\n            en: title\n        },\n        included_segments,\n        excluded_segments,\n        data: {\n            action,\n            actionData,\n            senderId,\n            senderRole\n        }\n    };\n    if (included_users !== null && included_users.length > 0)\n        notification.include_player_ids = included_users;\n    if (send_after)\n        notification.send_after = send_after;\n    if (to)\n        notification.filters = [{ field: 'tag', relation: '=', key: 'id', value: to }];\n    try {\n        const response = yield client.createNotification(notification);\n        if (response.body.recipients === 0 || !response.body.id || response.body.id.length < 3)\n            return reject(\"Aucun appareil déstinataire n'a été trouvé.\");\n        resolve(response.body.id);\n    }\n    catch (e) {\n        return reject(e.body);\n    }\n}));\n\n\n//# sourceURL=webpack:///./src/graphql/util/notification.ts?");
 
 /***/ }),
 
@@ -410,18 +398,6 @@ eval("\nfunction __export(m) {\n    for (var p in m) if (!exports.hasOwnProperty
 
 /***/ }),
 
-/***/ "./src/routes/stuart.ts":
-/*!******************************!*\
-  !*** ./src/routes/stuart.ts ***!
-  \******************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst express_1 = __webpack_require__(/*! express */ \"express\");\nconst models_1 = __webpack_require__(/*! ../models */ \"./src/models/index.ts\");\nconst populateFields_1 = __webpack_require__(/*! ../graphql/util/populateFields */ \"./src/graphql/util/populateFields.ts\");\nconst pubsub_1 = __webpack_require__(/*! ../graphql/pubsub */ \"./src/graphql/pubsub/index.ts\");\nconst constants_1 = __webpack_require__(/*! ../graphql/util/constants */ \"./src/graphql/util/constants.ts\");\nconst moment_1 = __webpack_require__(/*! ../helpers/moment */ \"./src/helpers/moment.js\");\nexports.StuartRouter = express_1.Router();\nexports.StuartRouter.post('/webhooks', (req, res, next) => {\n    const { data } = req.body;\n    if (data) {\n        const { status, clientReference } = data;\n        let state = null;\n        if (status) {\n            switch (status) {\n                case 'in_progress':\n                    state = 'DELIVERING';\n                    break;\n                case 'delivering':\n                    state = 'DELIVERING';\n                    break;\n                case 'finished':\n                    state = 'DELIVERED';\n                    break;\n                case 'canceled':\n                    state = 'CANCELED';\n                    break;\n                case 'voided':\n                    state = 'VOIDED';\n                    break;\n                case 'revoked':\n                    state = 'REVOKED';\n                    break;\n                case 'expired':\n                    state = 'EXPIRED';\n                    break;\n            }\n        }\n        if (!!state) {\n            if (clientReference) {\n                models_1.CommandModel.findOne({ num: parseInt(clientReference) })\n                    .populate(populateFields_1.populateFields.command.clientFlorist)\n                    .then(cmd => {\n                    const order = cmd;\n                    if (order) {\n                        const { driver, trackingUrl } = data;\n                        order.state = state ? state : 'PENDING';\n                        order.status = [...order.status, { state, date: moment_1.default().valueOf() }];\n                        if (driver && trackingUrl) {\n                            order.apiResponseLivringInfos = {\n                                job: data ? data.id : null,\n                                trackingUrl,\n                                driver: {\n                                    firstName: driver ? driver.firstname : null,\n                                    lastName: driver ? driver.lastname : null,\n                                    phone: driver ? driver.phone : null\n                                }\n                            };\n                        }\n                        order.save();\n                        pubsub_1.default.publish(constants_1.SubscriptionFire.COMMAND_UPDATED, { command: order });\n                    }\n                });\n            }\n        }\n    }\n});\nexports.default = exports.StuartRouter;\n\n\n//# sourceURL=webpack:///./src/routes/stuart.ts?");
-
-/***/ }),
-
 /***/ "./src/server.ts":
 /*!***********************!*\
   !*** ./src/server.ts ***!
@@ -430,7 +406,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst 
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst bodyParser = __webpack_require__(/*! body-parser */ \"body-parser\");\nconst compression = __webpack_require__(/*! compression */ \"compression\");\nconst cookieParser = __webpack_require__(/*! cookie-parser */ \"cookie-parser\");\nconst cors = __webpack_require__(/*! cors */ \"cors\");\nconst dotenv = __webpack_require__(/*! dotenv */ \"dotenv\");\nconst express = __webpack_require__(/*! express */ \"express\");\nconst helmet = __webpack_require__(/*! helmet */ \"helmet\");\nconst mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst logger = __webpack_require__(/*! morgan */ \"morgan\");\nconst bluebird = __webpack_require__(/*! bluebird */ \"bluebird\");\nconst apollo_server_express_1 = __webpack_require__(/*! apollo-server-express */ \"apollo-server-express\");\nconst graphql_1 = __webpack_require__(/*! ./graphql */ \"./src/graphql/index.ts\");\nconst routes_1 = __webpack_require__(/*! ./routes */ \"./src/routes/index.ts\");\nconst token_1 = __webpack_require__(/*! ./tools/token */ \"./src/tools/token.ts\");\nconst constant_1 = __webpack_require__(/*! ./tools/constant */ \"./src/tools/constant.ts\");\nconst function_1 = __webpack_require__(/*! ./helpers/function */ \"./src/helpers/function.ts\");\nconst stuart_1 = __webpack_require__(/*! ./routes/stuart */ \"./src/routes/stuart.ts\");\n//import { getUserByToken } from './helpers/function';\n//ANCHOR conexion mongoose database\nclass Server {\n    constructor() {\n        dotenv.config();\n        this.app = express();\n        this.connectMongoDB();\n        this.config();\n        this.setupRoutes();\n        this.setupGraphQL();\n        //console.log(process.env.PORT)\n    }\n    connectMongoDB() {\n        const mongoUrl = process.env.MONGOOSE_URI_CONNECTION;\n        mongoose.Promise = bluebird;\n        mongoose\n            .connect(mongoUrl, {\n            useCreateIndex: true,\n            useNewUrlParser: true,\n            useFindAndModify: false,\n            useUnifiedTopology: true\n        })\n            .then(() => {\n            /** ready to use. The `mongoose.connect()` promise resolves to undefined. */\n            console.log('Connected to database');\n        })\n            .catch(err => {\n            console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);\n            // process.exit();\n        });\n    }\n    setupRoutes() {\n        this.app.use(process.env.AUTH_ENDPOINT, routes_1.AuthRouter);\n        this.app.use(process.env.STUART_ENDPOINT, stuart_1.default);\n        this.app.use(process.env.GRAPHQL_ENDPOINT, (req, res, next) => {\n            const token = req.headers.authorization;\n            token_1.default.ensure(token).then(() => next()).catch(message => res.status(401).json({\n                success: false,\n                code: 401,\n                message\n            }));\n        });\n    }\n    setupGraphQL() {\n        const server = new apollo_server_express_1.ApolloServer({\n            schema: graphql_1.default,\n            context: ({ req }) => __awaiter(this, void 0, void 0, function* () {\n                var _a, _b;\n                const user = yield function_1.getUserByToken(req.headers.authorization);\n                console.log(\"user,user\");\n                return { user, token: req.headers.authorization, role: (_b = (_a = user) === null || _a === void 0 ? void 0 : _a.role, (_b !== null && _b !== void 0 ? _b : constant_1.UserRole.VISITOR)) };\n            })\n        });\n        server.applyMiddleware({ app: this.app, path: process.env.GRAPHQL_ENDPOINT });\n    }\n    config() {\n        this.app.use(bodyParser.urlencoded({ extended: true }));\n        this.app.use(bodyParser.json());\n        this.app.use(cookieParser());\n        this.app.use(logger('dev'));\n        //this.app.use(expressValidator());\n        this.app.use(helmet());\n        this.app.use(compression());\n        this.app.use(cors());\n    }\n}\nexports.default = new Server().app;\n\n\n//# sourceURL=webpack:///./src/server.ts?");
+eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst bodyParser = __webpack_require__(/*! body-parser */ \"body-parser\");\nconst compression = __webpack_require__(/*! compression */ \"compression\");\nconst cookieParser = __webpack_require__(/*! cookie-parser */ \"cookie-parser\");\nconst cors = __webpack_require__(/*! cors */ \"cors\");\nconst dotenv = __webpack_require__(/*! dotenv */ \"dotenv\");\nconst express = __webpack_require__(/*! express */ \"express\");\nconst helmet = __webpack_require__(/*! helmet */ \"helmet\");\nconst mongoose = __webpack_require__(/*! mongoose */ \"mongoose\");\nconst logger = __webpack_require__(/*! morgan */ \"morgan\");\nconst bluebird = __webpack_require__(/*! bluebird */ \"bluebird\");\nconst apollo_server_express_1 = __webpack_require__(/*! apollo-server-express */ \"apollo-server-express\");\nconst graphql_1 = __webpack_require__(/*! ./graphql */ \"./src/graphql/index.ts\");\nconst routes_1 = __webpack_require__(/*! ./routes */ \"./src/routes/index.ts\");\nconst token_1 = __webpack_require__(/*! ./tools/token */ \"./src/tools/token.ts\");\nconst constant_1 = __webpack_require__(/*! ./tools/constant */ \"./src/tools/constant.ts\");\nconst function_1 = __webpack_require__(/*! ./helpers/function */ \"./src/helpers/function.ts\");\n//import { getUserByToken } from './helpers/function';\n//ANCHOR conexion mongoose database\nclass Server {\n    constructor() {\n        dotenv.config();\n        this.app = express();\n        this.connectMongoDB();\n        this.config();\n        this.setupRoutes();\n        this.setupGraphQL();\n        //console.log(process.env.PORT)\n    }\n    connectMongoDB() {\n        const mongoUrl = process.env.MONGOOSE_URI_CONNECTION;\n        mongoose.Promise = bluebird;\n        mongoose\n            .connect(mongoUrl, {\n            useCreateIndex: true,\n            useNewUrlParser: true,\n            useFindAndModify: false,\n            useUnifiedTopology: true\n        })\n            .then(() => {\n            /** ready to use. The `mongoose.connect()` promise resolves to undefined. */\n            console.log('Connected to database');\n        })\n            .catch(err => {\n            console.log('MongoDB connection error. Please make sure MongoDB is running. ' + err);\n            // process.exit();\n        });\n    }\n    setupRoutes() {\n        this.app.use(process.env.AUTH_ENDPOINT, routes_1.AuthRouter);\n        this.app.use(process.env.GRAPHQL_ENDPOINT, (req, res, next) => {\n            const token = req.headers.authorization;\n            token_1.default.ensure(token).then(() => next()).catch(message => res.status(401).json({\n                success: false,\n                code: 401,\n                message\n            }));\n        });\n    }\n    setupGraphQL() {\n        const server = new apollo_server_express_1.ApolloServer({\n            schema: graphql_1.default,\n            context: ({ req }) => __awaiter(this, void 0, void 0, function* () {\n                var _a, _b;\n                const user = yield function_1.getUserByToken(req.headers.authorization);\n                console.log(\"user,user\");\n                return { user, token: req.headers.authorization, role: (_b = (_a = user) === null || _a === void 0 ? void 0 : _a.role, (_b !== null && _b !== void 0 ? _b : constant_1.UserRole.VISITOR)) };\n            })\n        });\n        server.applyMiddleware({ app: this.app, path: process.env.GRAPHQL_ENDPOINT });\n    }\n    config() {\n        this.app.use(bodyParser.urlencoded({ extended: true }));\n        this.app.use(bodyParser.json());\n        this.app.use(cookieParser());\n        this.app.use(logger('dev'));\n        //this.app.use(expressValidator());\n        this.app.use(helmet());\n        this.app.use(compression());\n        this.app.use(cors());\n    }\n}\nexports.default = new Server().app;\n\n\n//# sourceURL=webpack:///./src/server.ts?");
 
 /***/ }),
 
@@ -443,18 +419,6 @@ eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _argument
 
 "use strict";
 eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.UserRole = {\n    ADMIN: 'ADMIN',\n    CLIENT: 'CLIENT',\n    FLORIST: 'FLORIST',\n    VISITOR: 'VISITOR'\n};\nexports.MAIL_HOST = 'mail.toolynk.com';\nexports.MAIL_USER = 'bridge@toolynk.com';\nexports.MAIL_PASSWORD = 'G&340fvv';\nexports.EMAIL_SENDER = 'contact@toolynk.com';\nexports.EMAIL_SENDER_PASSWORD = 'sahbanial123';\nexports.CURRENCY = 'EUR';\nexports.PHONE_PRFIX = '+33';\nexports.MAX_DISTANCE = 7;\nexports.MomentFormat = {\n    DATE_HOURS: 'DD/MM/YYYY HH:mm',\n    DATE: 'DD/MM/YYYY',\n    TIME: 'HH:mm'\n};\n\n\n//# sourceURL=webpack:///./src/tools/constant.ts?");
-
-/***/ }),
-
-/***/ "./src/tools/onesignal.ts":
-/*!********************************!*\
-  !*** ./src/tools/onesignal.ts ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-eval("\nObject.defineProperty(exports, \"__esModule\", { value: true });\nconst onesignal = __webpack_require__(/*! simple-onesignal */ \"simple-onesignal\");\nonesignal.configure('07b25e23-ac33-4a74-aade-3bc0e3cfabc9', 'ZjBkZmZkZWMtYjJjZS00ZTE0LTliZDgtNTgzODBkYTUxYWEz');\nexports.default = onesignal;\n\n\n//# sourceURL=webpack:///./src/tools/onesignal.ts?");
 
 /***/ }),
 
@@ -591,17 +555,6 @@ eval("module.exports = require(\"graphql\");\n\n//# sourceURL=webpack:///externa
 
 /***/ }),
 
-/***/ "graphql-subscriptions":
-/*!****************************************!*\
-  !*** external "graphql-subscriptions" ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"graphql-subscriptions\");\n\n//# sourceURL=webpack:///external_%22graphql-subscriptions%22?");
-
-/***/ }),
-
 /***/ "graphql-tools":
 /*!********************************!*\
   !*** external "graphql-tools" ***!
@@ -690,14 +643,14 @@ eval("module.exports = require(\"morgan\");\n\n//# sourceURL=webpack:///external
 
 /***/ }),
 
-/***/ "simple-onesignal":
-/*!***********************************!*\
-  !*** external "simple-onesignal" ***!
-  \***********************************/
+/***/ "onesignal-node":
+/*!*********************************!*\
+  !*** external "onesignal-node" ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("module.exports = require(\"simple-onesignal\");\n\n//# sourceURL=webpack:///external_%22simple-onesignal%22?");
+eval("module.exports = require(\"onesignal-node\");\n\n//# sourceURL=webpack:///external_%22onesignal-node%22?");
 
 /***/ }),
 

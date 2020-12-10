@@ -4,6 +4,7 @@ type News {
   subTitle: String
   description: String
   createdAt: Float
+  photoUrl: String
   updatedAt: Float
 }
 
@@ -17,4 +18,6 @@ extend type Query {
 }
 extend type Mutation {
   addNews(input: NewsInput): News
+  deleteNews(id: ID): News
+  updateNews(id:ID,input:NewsInput):News
 }

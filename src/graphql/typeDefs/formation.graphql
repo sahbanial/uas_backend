@@ -16,6 +16,7 @@ input InputFormation {
 extend type Mutation {
   addFormation(input: InputFormation): Formation
   deleteFormation(id: ID): Formation
+  updateFormation(id:ID,input:InputFormation):Formation
 }
 extend type Query {
   getFormations: [Formation]
