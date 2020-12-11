@@ -28,8 +28,8 @@ export const sendPushNotification = ({
 }) =>
 	new Promise(async (resolve, reject) => {
 		const client = new OneSignal.Client(
-			"07b25e23-ac33-4a74-aade-3bc0e3cfabc9",
-			"ZjBkZmZkZWMtYjJjZS00ZTE0LTliZDgtNTgzODBkYTUxYWEz"
+			"0509b738-6221-4819-a1a5-59e48f406399",
+			"NDE1ZDdkNWEtNzc0ZC00MDVmLTgzZTctOTBkYWRkYThlM2Iz"
 		);
 		const notification = {
 			contents: {

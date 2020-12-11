@@ -7,7 +7,7 @@ const newsSchema =new Schema({
     subTitle:String,
     description:String,
     photoUrl:String,
-    createAt:Number,
+    createdAt:Number,
     updatedAt:Number
 },{
     toJSON:{virtuals:true},
